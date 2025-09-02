@@ -233,6 +233,9 @@ function initEventListeners() {
     // Dashboard actions
     document.getElementById('reset-data')?.addEventListener('click', resetData);
     document.getElementById('backup-data')?.addEventListener('click', exportData);
+    
+    // Sync site button
+    document.getElementById('sync-site')?.addEventListener('click', syncSite);
 }
 
 // Funciones para manejo de imágenes
@@ -1246,8 +1249,102 @@ function handlePageTitleSave(e) {
     showMessage('Título de página actualizado', 'success');
 }
 
+// Función para sincronizar sitio web
+function syncSite() {
+    // Mostrar mensaje de carga
+    showMessage('🔄 Sincronizando sitio web...', 'info');
+    
+    // Primero, crear el archivo cms-data.json
+    const dataToSync = {
+        ...currentData,
+        syncDate: new Date().toISOString(),
+        version: '2.0'
+    };
+    
+    // Crear y descargar archivo JSON
+    const blob = new Blob([JSON.stringify(dataToSync, null, 2)], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'cms-data.json';
+    a.style.display = 'none';
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    
+    URL.revokeObjectURL(url);
+    
+    setTimeout(() => {
+        showMessage(`
+            ✅ Archivo cms-data.json descargado.
+            
+            🚀 PASOS PARA COMPLETAR LA SINCRONIZACIÓN:
+            
+            1. Abre la terminal en la carpeta del proyecto
+            2. Ejecuta: node sync-cms.js sync
+            3. Ejecuta: ./deploy.sh
+            
+            ⚠️  El archivo cms-data.json debe estar en la carpeta raíz del proyecto.
+        `, 'success');
+    }, 1000);
+    
+    // También mostrar las instrucciones en consola
+    console.log('%c🌞 HIJOS DEL SOL - SINCRONIZACIÓN', 'color: #f39c12; font-weight: bold; font-size: 16px;');
+    console.log('📁 Datos del CMS:', dataToSync);
+    console.log('%c📋 INSTRUCCIONES:', 'color: #3498db; font-weight: bold;');
+    console.log('1. Coloca el archivo cms-data.json descargado en la carpeta del proyecto');
+    console.log('2. En terminal: node sync-cms.js sync');
+    console.log('3. En terminal: ./deploy.sh');
+}
+
+// Función para crear script de sincronización automático (experimental)
+function createSyncScript() {
+    const syncScript = `#!/bin/bash
+
+# Script de sincronización automática
+echo "🔄 Sincronizando datos del CMS..."
+
+# Verificar si existe cms-data.json
+if [ ! -f "cms-data.json" ]; then
+    echo "❌ Error: cms-data.json no encontrado"
+    echo "💡 Ve al panel de administración y presiona 'Sincronizar Sitio'"
+    exit 1
+fi
+
+# Ejecutar sincronización
+node sync-cms.js sync
+
+if [ $? -eq 0 ]; then
+    echo "✅ Sincronización completada"
+    echo "🚀 Ejecutando deployment..."
+    ./deploy.sh
+else
+    echo "❌ Error en la sincronización"
+    exit 1
+fi
+`;
+    
+    const blob = new Blob([syncScript], { type: 'text/plain' });
+    const url = URL.createObjectURL(blob);
+    
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'sync-and-deploy.sh';
+    a.style.display = 'none';
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    
+    URL.revokeObjectURL(url);
+    
+    showMessage('Script de sincronización automática descargado', 'info');
+}
+
 // Exportar funciones globales para uso en la página principal
 window.getCMSData = getCMSData;
 window.updateCMSData = updateCMSData;
+window.syncSite = syncSite;
+window.createSyncScript = createSyncScript;
 
 console.log('🔐 CMS Admin Script cargado correctamente');

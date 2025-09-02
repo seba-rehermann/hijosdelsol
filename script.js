@@ -1,3 +1,101 @@
+
+// 🔄 DATOS SINCRONIZADOS DEL CMS - Generado automáticamente
+const CMS_DATA_STATIC = {
+  "products": {
+    "nukini": {
+      "id": "nukini",
+      "name": "Rapé Nukini",
+      "price": 2500,
+      "emoji": "🌿",
+      "imageType": "emoji",
+      "imageUrl": "",
+      "description": "Rapé tradicional de la tribu Nukini, conocido por su efecto clarificador y equilibrante.",
+      "features": [
+        "Claridad Mental",
+        "Conexión Espiritual"
+      ],
+      "stock": "En Stock"
+    },
+    "huni-kuin": {
+      "id": "huni-kuin",
+      "name": "Rapé Huni Kuin",
+      "price": 2800,
+      "emoji": "🍃",
+      "imageType": "emoji",
+      "imageUrl": "",
+      "description": "Medicina sagrada de la tribu Huni Kuin del Acre, Brasil. Elaborado con plantas medicinales.",
+      "features": [
+        "Introspección",
+        "Sanación"
+      ],
+      "stock": "En Stock"
+    }
+  },
+  "ceremonies": {
+    "luna-nueva": {
+      "id": "luna-nueva",
+      "name": "Ceremonia de Luna Nueva",
+      "date": "2025-03-15",
+      "time": "16:00 - 20:00 hs",
+      "location": "Centro Ceremonial Pachamama, Buenos Aires",
+      "facilitator": "Shamán Carlos Nukini",
+      "description": "Ceremonia especial de luna nueva para liberar lo que ya no sirve y manifestar nuevas intenciones.",
+      "imageUrl": "",
+      "price": 8500,
+      "spots": 12
+    }
+  },
+  "content": {
+    "navigation": {
+      "brand": "☀️ Hijos del Sol",
+      "links": {
+        "inicio": "Inicio",
+        "productos": "Productos",
+        "ceremonias": "Ceremonias",
+        "nosotros": "Nosotros",
+        "contacto": "Contacto"
+      }
+    },
+    "hero": {
+      "title": "☀️ Hijos del Sol",
+      "subtitle": "Conecta con la medicina ancestral en un espacio sagrado de sanación, transformación y comunidad",
+      "button1": "Explorar Productos",
+      "button2": "Ver Ceremonias",
+      "background_image": "",
+      "use_gradient": true
+    },
+    "products_section": {
+      "title": "🌿 Nuestros Productos Sagrados",
+      "subtitle": "Medicina ancestral de las tradiciones amazónicas"
+    },
+    "ceremonies_section": {
+      "title": "🕉️ Ceremonias Sagradas",
+      "subtitle": "Espacios de sanación y transformación"
+    },
+    "page_title": "☀️ Hijos del Sol - Ceremonias Sagradas"
+  },
+  "contact": {
+    "phone": "+54 11 2345-6789",
+    "email": "medicina@hijosdelsol.com",
+    "address": "Buenos Aires, Argentina",
+    "instagram": "@hijosdelsol.ceremonias",
+    "whatsapp": "5491123456789"
+  }
+};
+
+// Función para cargar datos estáticos del CMS
+function loadStaticCMSData() {
+    // Usar datos estáticos si no hay datos en localStorage
+    const savedData = localStorage.getItem('hijosdelsol_cms_data');
+    if (!savedData) {
+        localStorage.setItem('hijosdelsol_cms_data', JSON.stringify(CMS_DATA_STATIC));
+        console.log('📁 Datos estáticos del CMS cargados por primera vez');
+    }
+}
+
+// Cargar datos estáticos al inicio
+loadStaticCMSData();
+
 // Variables globales
 let cart = [];
 let cartCount = 0;
