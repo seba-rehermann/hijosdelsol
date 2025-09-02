@@ -77,6 +77,7 @@
             <button class="nav-btn" data-section="ceremonias">🕉️ Ceremonias</button>
             <button class="nav-btn" data-section="contenido">📝 Contenido</button>
             <button class="nav-btn" data-section="contacto">📞 Contacto</button>
+            <button class="nav-btn" data-section="configuracion">⚙️ Configuración</button>
         </nav>
 
         <!-- Main Content -->
@@ -464,6 +465,138 @@
                     <button type="submit" class="btn btn-primary">Guardar Cambios</button>
                 </form>
             </section>
+
+            <!-- Configuration Section -->
+            <section id="configuracion-section" class="admin-section">
+                <h2>⚙️ Configuración del Sistema</h2>
+                
+                <!-- GitHub Sync Configuration -->
+                <div class="form-card">
+                    <h3>🐙 Sincronización con GitHub</h3>
+                    <p class="form-description">
+                        Configura la sincronización automática con GitHub para mantener tus datos seguros y sincronizados entre dispositivos.
+                    </p>
+                    
+                    <div class="sync-status" id="github-status">
+                        <div class="status-indicator" id="github-status-icon">❌</div>
+                        <span id="github-status-text">No configurado</span>
+                    </div>
+                    
+                    <form id="github-config-form">
+                        <div class="form-group">
+                            <label for="github-owner">Usuario de GitHub:</label>
+                            <input type="text" id="github-owner" name="github-owner" value="seba-rehermann" required>
+                            <small>Tu nombre de usuario en GitHub</small>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="github-repo">Nombre del Repositorio:</label>
+                            <input type="text" id="github-repo" name="github-repo" value="hijosdelsol" required>
+                            <small>Nombre del repositorio donde se guardarán los datos</small>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="github-token">Token de Acceso Personal:</label>
+                            <input type="password" id="github-token" name="github-token" placeholder="ghp_xxxxxxxxxxxx" required>
+                            <small>
+                                <strong>Cómo obtener el token:</strong><br>
+                                1. Ve a GitHub → Settings → Developer settings → Personal access tokens<br>
+                                2. Generate new token → Classic<br>
+                                3. Permisos necesarios: <code>repo</code> (Full control of private repositories)
+                            </small>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="github-branch">Rama:</label>
+                            <input type="text" id="github-branch" name="github-branch" value="main" required>
+                        </div>
+                        
+                        <div class="form-actions">
+                            <button type="submit" class="btn btn-primary">💾 Guardar Configuración</button>
+                            <button type="button" id="test-github-connection" class="btn btn-secondary">🔍 Probar Conexión</button>
+                            <button type="button" id="force-sync-github" class="btn btn-success" disabled>🔄 Sincronizar Ahora</button>
+                        </div>
+                    </form>
+                </div>
+                
+                <!-- Backup Settings -->
+                <div class="form-card">
+                    <h3>💾 Configuración de Respaldos</h3>
+                    <p class="form-description">
+                        Gestiona tus copias de seguridad locales y en la nube.
+                    </p>
+                    
+                    <div class="backup-info">
+                        <div class="backup-stat">
+                            <span class="stat-label">Último respaldo:</span>
+                            <span class="stat-value" id="last-backup">Nunca</span>
+                        </div>
+                        <div class="backup-stat">
+                            <span class="stat-label">Tamaño de datos:</span>
+                            <span class="stat-value" id="data-size-config">0 KB</span>
+                        </div>
+                    </div>
+                    
+                    <div class="form-actions">
+                        <button type="button" id="create-backup" class="btn btn-secondary">📥 Crear Respaldo Local</button>
+                        <button type="button" id="auto-backup-toggle" class="btn btn-secondary">⚡ Respaldo Automático: OFF</button>
+                    </div>
+                </div>
+                
+                <!-- System Information -->
+                <div class="form-card">
+                    <h3>ℹ️ Información del Sistema</h3>
+                    <div class="system-info">
+                        <div class="info-item">
+                            <span class="info-label">Versión:</span>
+                            <span class="info-value" id="system-version">4.0-github-sync</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">Última actualización:</span>
+                            <span class="info-value" id="last-update">-</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">Estado de conexión:</span>
+                            <span class="info-value" id="connection-status">En línea</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">Dispositivo:</span>
+                            <span class="info-value" id="device-info">Desktop</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Advanced Settings -->
+                <div class="form-card">
+                    <h3>🔧 Configuración Avanzada</h3>
+                    <div class="advanced-settings">
+                        <div class="setting-item">
+                            <label for="auto-sync-interval">Intervalo de sincronización automática (minutos):</label>
+                            <input type="number" id="auto-sync-interval" value="2" min="1" max="60">
+                            <small>Frecuencia con que se verifica si hay cambios (mínimo 1 minuto)</small>
+                        </div>
+                        
+                        <div class="setting-item">
+                            <label>
+                                <input type="checkbox" id="debug-mode"> Modo debug
+                            </label>
+                            <small>Mostrar información detallada en la consola del navegador</small>
+                        </div>
+                        
+                        <div class="setting-item">
+                            <label>
+                                <input type="checkbox" id="offline-mode"> Modo sin conexión
+                            </label>
+                            <small>Deshabilitar sincronización automática</small>
+                        </div>
+                    </div>
+                    
+                    <div class="form-actions">
+                        <button type="button" id="save-advanced-settings" class="btn btn-primary">💾 Guardar Configuración</button>
+                        <button type="button" id="reset-all-settings" class="btn btn-danger">🔄 Restablecer Todo</button>
+                    </div>
+                </div>
+            </section>
         </main>
     </div>
 
@@ -615,6 +748,7 @@
     <!-- Success/Error Messages -->
     <div id="message-container"></div>
 
+    <script src="github-sync.js"></script>
     <script src="admin-script.js"></script>
     
     <!-- PWA Service Worker Registration (mismo que el sitio principal) -->

@@ -233,9 +233,6 @@ function initEventListeners() {
     // Dashboard actions
     document.getElementById('reset-data')?.addEventListener('click', resetData);
     document.getElementById('backup-data')?.addEventListener('click', exportData);
-    
-    // Sync site button
-    document.getElementById('sync-site')?.addEventListener('click', syncSite);
 }
 
 // Funciones para manejo de imágenes
@@ -1249,102 +1246,230 @@ function handlePageTitleSave(e) {
     showMessage('Título de página actualizado', 'success');
 }
 
-// Función para sincronizar sitio web
-function syncSite() {
-    // Mostrar mensaje de carga
-    showMessage('🔄 Sincronizando sitio web...', 'info');
+// Funcionalidad para la configuración de GitHub
+function initGitHubConfigListeners() {
+    // Formulario de configuración GitHub
+    const githubConfigForm = document.getElementById('github-config-form');
+    if (githubConfigForm) {
+        githubConfigForm.addEventListener('submit', handleGitHubConfigSave);
+    }
     
-    // Primero, crear el archivo cms-data.json
-    const dataToSync = {
-        ...currentData,
-        syncDate: new Date().toISOString(),
-        version: '2.0'
-    };
+    // Botón para probar conexión
+    const testConnectionBtn = document.getElementById('test-github-connection');
+    if (testConnectionBtn) {
+        testConnectionBtn.addEventListener('click', testGitHubConnection);
+    }
     
-    // Crear y descargar archivo JSON
-    const blob = new Blob([JSON.stringify(dataToSync, null, 2)], { type: 'application/json' });
-    const url = URL.createObjectURL(blob);
+    // Botón para forzar sincronización
+    const forceSyncBtn = document.getElementById('force-sync-github');
+    if (forceSyncBtn) {
+        forceSyncBtn.addEventListener('click', forceSyncToGitHub);
+    }
     
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = 'cms-data.json';
-    a.style.display = 'none';
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
-    
-    URL.revokeObjectURL(url);
-    
-    setTimeout(() => {
-        showMessage(`
-            ✅ Archivo cms-data.json descargado.
-            
-            🚀 PASOS PARA COMPLETAR LA SINCRONIZACIÓN:
-            
-            1. Abre la terminal en la carpeta del proyecto
-            2. Ejecuta: node sync-cms.js sync
-            3. Ejecuta: ./deploy.sh
-            
-            ⚠️  El archivo cms-data.json debe estar en la carpeta raíz del proyecto.
-        `, 'success');
-    }, 1000);
-    
-    // También mostrar las instrucciones en consola
-    console.log('%c🌞 HIJOS DEL SOL - SINCRONIZACIÓN', 'color: #f39c12; font-weight: bold; font-size: 16px;');
-    console.log('📁 Datos del CMS:', dataToSync);
-    console.log('%c📋 INSTRUCCIONES:', 'color: #3498db; font-weight: bold;');
-    console.log('1. Coloca el archivo cms-data.json descargado en la carpeta del proyecto');
-    console.log('2. En terminal: node sync-cms.js sync');
-    console.log('3. En terminal: ./deploy.sh');
+    // Cargar configuración existente
+    loadGitHubConfig();
+    updateGitHubStatus();
 }
 
-// Función para crear script de sincronización automático (experimental)
-function createSyncScript() {
-    const syncScript = `#!/bin/bash
-
-# Script de sincronización automática
-echo "🔄 Sincronizando datos del CMS..."
-
-# Verificar si existe cms-data.json
-if [ ! -f "cms-data.json" ]; then
-    echo "❌ Error: cms-data.json no encontrado"
-    echo "💡 Ve al panel de administración y presiona 'Sincronizar Sitio'"
-    exit 1
-fi
-
-# Ejecutar sincronización
-node sync-cms.js sync
-
-if [ $? -eq 0 ]; then
-    echo "✅ Sincronización completada"
-    echo "🚀 Ejecutando deployment..."
-    ./deploy.sh
-else
-    echo "❌ Error en la sincronización"
-    exit 1
-fi
-`;
+// Cargar configuración de GitHub existente
+function loadGitHubConfig() {
+    const savedConfig = localStorage.getItem('github_config');
+    const token = localStorage.getItem('github_token');
     
-    const blob = new Blob([syncScript], { type: 'text/plain' });
-    const url = URL.createObjectURL(blob);
+    if (savedConfig) {
+        try {
+            const config = JSON.parse(savedConfig);
+            
+            // Llenar el formulario
+            const ownerField = document.getElementById('github-owner');
+            const repoField = document.getElementById('github-repo');
+            const branchField = document.getElementById('github-branch');
+            
+            if (ownerField) ownerField.value = config.owner || 'seba-rehermann';
+            if (repoField) repoField.value = config.repo || 'hijosdelsol';
+            if (branchField) branchField.value = config.branch || 'main';
+        } catch (e) {
+            console.warn('Error cargando configuración de GitHub:', e);
+        }
+    }
     
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = 'sync-and-deploy.sh';
-    a.style.display = 'none';
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
+    // Actualizar estado del botón de sincronización
+    const forceSyncBtn = document.getElementById('force-sync-github');
+    if (forceSyncBtn) {
+        forceSyncBtn.disabled = !token;
+    }
+}
+
+// Actualizar estado visual de GitHub
+function updateGitHubStatus() {
+    const statusIcon = document.getElementById('github-status-icon');
+    const statusText = document.getElementById('github-status-text');
+    const githubStatus = document.getElementById('github-status');
+    const token = localStorage.getItem('github_token');
     
-    URL.revokeObjectURL(url);
+    if (!statusIcon || !statusText || !githubStatus) return;
     
-    showMessage('Script de sincronización automática descargado', 'info');
+    if (token) {
+        statusIcon.textContent = '✅';
+        statusText.textContent = 'Configurado y listo';
+        githubStatus.className = 'sync-status connected';
+    } else {
+        statusIcon.textContent = '❌';
+        statusText.textContent = 'No configurado';
+        githubStatus.className = 'sync-status error';
+    }
+}
+
+// Manejar guardado de configuración de GitHub
+async function handleGitHubConfigSave(e) {
+    e.preventDefault();
+    
+    const formData = new FormData(e.target);
+    const owner = formData.get('github-owner');
+    const repo = formData.get('github-repo');
+    const token = formData.get('github-token');
+    const branch = formData.get('github-branch') || 'main';
+    
+    if (!owner || !repo || !token) {
+        showMessage('Por favor completa todos los campos', 'error');
+        return;
+    }
+    
+    // Usar la función del GitHub Sync Manager si está disponible
+    if (window.githubSyncManager && typeof window.githubSyncManager.setupGitHub === 'function') {
+        try {
+            const result = await window.githubSyncManager.setupGitHub(owner, repo, token, branch);
+            
+            if (result) {
+                updateGitHubStatus();
+                showMessage('✅ Configuración de GitHub guardada exitosamente', 'success');
+                
+                // Habilitar botón de sincronización
+                const forceSyncBtn = document.getElementById('force-sync-github');
+                if (forceSyncBtn) {
+                    forceSyncBtn.disabled = false;
+                }
+            } else {
+                showMessage('⚠️ Configuración guardada pero hay problemas de conexión', 'warning');
+            }
+        } catch (error) {
+            console.error('Error configurando GitHub:', error);
+            showMessage('❌ Error al configurar GitHub', 'error');
+        }
+    } else {
+        // Fallback: guardar manualmente
+        localStorage.setItem('github_token', token);
+        const config = { owner, repo, branch, token };
+        localStorage.setItem('github_config', JSON.stringify(config));
+        
+        updateGitHubStatus();
+        showMessage('✅ Configuración guardada', 'success');
+    }
+}
+
+// Probar conexión con GitHub
+async function testGitHubConnection() {
+    const btn = document.getElementById('test-github-connection');
+    const originalText = btn.textContent;
+    
+    btn.textContent = '🔍 Probando...';
+    btn.disabled = true;
+    
+    try {
+        if (window.githubSyncManager && typeof window.githubSyncManager.testGitHubConnection === 'function') {
+            const result = await window.githubSyncManager.testGitHubConnection();
+            
+            if (result) {
+                showMessage('✅ Conexión con GitHub exitosa', 'success');
+                updateGitHubStatusToConnected();
+            } else {
+                showMessage('❌ Error conectando con GitHub. Verifica tus credenciales.', 'error');
+                updateGitHubStatusToError();
+            }
+        } else {
+            showMessage('⚠️ Sistema de sincronización no disponible', 'warning');
+        }
+    } catch (error) {
+        console.error('Error probando conexión:', error);
+        showMessage('❌ Error probando conexión con GitHub', 'error');
+        updateGitHubStatusToError();
+    } finally {
+        btn.textContent = originalText;
+        btn.disabled = false;
+    }
+}
+
+// Forzar sincronización
+async function forceSyncToGitHub() {
+    const btn = document.getElementById('force-sync-github');
+    const originalText = btn.textContent;
+    
+    btn.textContent = '🔄 Sincronizando...';
+    btn.disabled = true;
+    
+    try {
+        if (window.githubSyncManager && typeof window.githubSyncManager.forceSyncToGitHub === 'function') {
+            const result = await window.githubSyncManager.forceSyncToGitHub();
+            
+            if (result) {
+                showMessage('✅ Sincronización exitosa', 'success');
+                updateLastSyncTime();
+            } else {
+                showMessage('⚠️ Error en sincronización. Datos guardados localmente.', 'warning');
+            }
+        } else {
+            showMessage('⚠️ Sistema de sincronización no disponible', 'warning');
+        }
+    } catch (error) {
+        console.error('Error en sincronización:', error);
+        showMessage('❌ Error sincronizando con GitHub', 'error');
+    } finally {
+        btn.textContent = originalText;
+        btn.disabled = false;
+    }
+}
+
+// Actualizar estado a conectado
+function updateGitHubStatusToConnected() {
+    const statusIcon = document.getElementById('github-status-icon');
+    const statusText = document.getElementById('github-status-text');
+    const githubStatus = document.getElementById('github-status');
+    
+    if (statusIcon) statusIcon.textContent = '✅';
+    if (statusText) statusText.textContent = 'Conectado correctamente';
+    if (githubStatus) githubStatus.className = 'sync-status connected';
+}
+
+// Actualizar estado a error
+function updateGitHubStatusToError() {
+    const statusIcon = document.getElementById('github-status-icon');
+    const statusText = document.getElementById('github-status-text');
+    const githubStatus = document.getElementById('github-status');
+    
+    if (statusIcon) statusIcon.textContent = '❌';
+    if (statusText) statusText.textContent = 'Error de conexión';
+    if (githubStatus) githubStatus.className = 'sync-status error';
+}
+
+// Actualizar hora de última sincronización
+function updateLastSyncTime() {
+    const lastUpdateElement = document.getElementById('last-update');
+    if (lastUpdateElement) {
+        const now = new Date().toLocaleString('es-AR');
+        lastUpdateElement.textContent = now;
+    }
 }
 
 // Exportar funciones globales para uso en la página principal
 window.getCMSData = getCMSData;
 window.updateCMSData = updateCMSData;
-window.syncSite = syncSite;
-window.createSyncScript = createSyncScript;
+
+// Inicializar configuración de GitHub cuando sea necesario
+document.addEventListener('DOMContentLoaded', function() {
+    // Esperar un poco para que el GitHub Sync Manager se inicialice
+    setTimeout(() => {
+        initGitHubConfigListeners();
+    }, 500);
+});
 
 console.log('🔐 CMS Admin Script cargado correctamente');
