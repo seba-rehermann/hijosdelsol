@@ -1,0 +1,635 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <!-- PWA Meta Tags -->
+    <meta name="description" content="Panel de administración para Hijos del Sol - Medicina Natural y Ceremonias Sagradas">
+    <meta name="author" content="Hijos del Sol">
+    
+    <!-- PWA Manifest -->
+    <link rel="manifest" href="manifest.json">
+    
+    <!-- Theme Colors -->
+    <meta name="theme-color" content="#228B22">
+    <meta name="msapplication-TileColor" content="#228B22">
+    <meta name="msapplication-navbutton-color" content="#228B22">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    
+    <!-- PWA Icons -->
+    <link rel="icon" type="image/x-icon" href="icons/favicon.ico">
+    <link rel="icon" type="image/png" sizes="32x32" href="icons/icon-192x192.png">
+    <link rel="apple-touch-icon" href="icons/icon-192x192.png">
+    
+    <!-- PWA App Capabilities -->
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-title" content="Admin - Hijos del Sol">
+    
+    <title>🔐 Admin - Hijos del Sol</title>
+    <link rel="stylesheet" href="admin-styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Login Screen -->
+    <div id="login-screen" class="login-screen">
+        <div class="login-container">
+            <div class="login-header">
+                <h1>☀️ Hijos del Sol</h1>
+                <p>Panel de Administración</p>
+            </div>
+            <form id="login-form" class="login-form">
+                <div class="form-group">
+                    <label for="password">Contraseña:</label>
+                    <input type="password" id="password" name="password" placeholder="Ingresa tu contraseña" required>
+                </div>
+                <button type="submit" class="btn btn-primary">Iniciar Sesión</button>
+            </form>
+            <div id="login-error" class="error-message" style="display: none;"></div>
+            <div class="login-footer">
+                <a href="index.html" class="back-link">← Volver al sitio</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Admin Panel -->
+    <div id="admin-panel" class="admin-panel" style="display: none;">
+        <!-- Header -->
+        <header class="admin-header">
+            <div class="header-content">
+                <h1>☀️ Panel de Administración</h1>
+                <div class="header-actions">
+                    <button id="export-data" class="btn btn-secondary">📥 Exportar</button>
+                    <button id="import-data" class="btn btn-secondary">📤 Importar</button>
+                    <button id="logout-btn" class="btn btn-danger">🚪 Cerrar Sesión</button>
+                </div>
+            </div>
+        </header>
+
+        <!-- Navigation -->
+        <nav class="admin-nav">
+            <button class="nav-btn active" data-section="dashboard">📊 Dashboard</button>
+            <button class="nav-btn" data-section="productos">🌿 Productos</button>
+            <button class="nav-btn" data-section="ceremonias">🕉️ Ceremonias</button>
+            <button class="nav-btn" data-section="contenido">📝 Contenido</button>
+            <button class="nav-btn" data-section="contacto">📞 Contacto</button>
+        </nav>
+
+        <!-- Main Content -->
+        <main class="admin-main">
+            <!-- Dashboard Section -->
+            <section id="dashboard-section" class="admin-section active">
+                <h2>📊 Dashboard</h2>
+                <div class="dashboard-cards">
+                    <div class="dashboard-card">
+                        <h3>🌿 Productos</h3>
+                        <div class="card-number" id="products-count">4</div>
+                        <p>Productos activos</p>
+                    </div>
+                    <div class="dashboard-card">
+                        <h3>🕉️ Ceremonias</h3>
+                        <div class="card-number" id="ceremonies-count">3</div>
+                        <p>Ceremonias programadas</p>
+                    </div>
+                    <div class="dashboard-card">
+                        <h3>💾 Datos</h3>
+                        <div class="card-number" id="data-size">0KB</div>
+                        <p>Espacio utilizado</p>
+                    </div>
+                </div>
+                <div class="dashboard-actions">
+                    <button id="reset-data" class="btn btn-danger">🔄 Resetear Datos</button>
+                    <button id="backup-data" class="btn btn-secondary">💾 Crear Backup</button>
+                </div>
+            </section>
+
+            <!-- Products Section -->
+            <section id="productos-section" class="admin-section">
+                <div class="section-header">
+                    <h2>🌿 Gestión de Productos</h2>
+                    <button id="add-product" class="btn btn-primary">➕ Agregar Producto</button>
+                </div>
+                <div id="products-list" class="items-list">
+                    <!-- Products will be loaded here -->
+                </div>
+            </section>
+
+            <!-- Ceremonies Section -->
+            <section id="ceremonias-section" class="admin-section">
+                <div class="section-header">
+                    <h2>🕉️ Gestión de Ceremonias</h2>
+                    <button id="add-ceremony" class="btn btn-primary">➕ Agregar Ceremonia</button>
+                </div>
+                <div id="ceremonies-list" class="items-list">
+                    <!-- Ceremonies will be loaded here -->
+                </div>
+            </section>
+
+            <!-- Content Section -->
+            <section id="contenido-section" class="admin-section">
+                <h2>📝 Gestión de Contenido Completa</h2>
+                <div class="content-forms">
+                    <!-- Navegación -->
+                    <div class="form-card">
+                        <h3>🧭 Navegación</h3>
+                        <form id="navigation-form">
+                            <div class="form-group">
+                                <label for="nav-brand">Marca/Logo:</label>
+                                <input type="text" id="nav-brand" name="nav-brand">
+                            </div>
+                            <div class="form-grid">
+                                <div class="form-group">
+                                    <label for="nav-inicio">Enlace Inicio:</label>
+                                    <input type="text" id="nav-inicio" name="nav-inicio">
+                                </div>
+                                <div class="form-group">
+                                    <label for="nav-productos">Enlace Productos:</label>
+                                    <input type="text" id="nav-productos" name="nav-productos">
+                                </div>
+                                <div class="form-group">
+                                    <label for="nav-ceremonias">Enlace Ceremonias:</label>
+                                    <input type="text" id="nav-ceremonias" name="nav-ceremonias">
+                                </div>
+                                <div class="form-group">
+                                    <label for="nav-nosotros">Enlace Nosotros:</label>
+                                    <input type="text" id="nav-nosotros" name="nav-nosotros">
+                                </div>
+                                <div class="form-group">
+                                    <label for="nav-contacto">Enlace Contacto:</label>
+                                    <input type="text" id="nav-contacto" name="nav-contacto">
+                                </div>
+                            </div>
+                            <button type="submit" class="btn btn-primary">Guardar Navegación</button>
+                        </form>
+                    </div>
+
+                    <!-- Hero Section -->
+                    <div class="form-card">
+                        <h3>🌞 Hero Section</h3>
+                        <form id="hero-form">
+                            <div class="form-group">
+                                <label for="hero-title">Título Principal:</label>
+                                <input type="text" id="hero-title" name="hero-title">
+                            </div>
+                            <div class="form-group">
+                                <label for="hero-subtitle">Subtítulo:</label>
+                                <textarea id="hero-subtitle" name="hero-subtitle" rows="2"></textarea>
+                            </div>
+                            <div class="form-grid">
+                                <div class="form-group">
+                                    <label for="hero-button1">Texto Botón 1:</label>
+                                    <input type="text" id="hero-button1" name="hero-button1">
+                                </div>
+                                <div class="form-group">
+                                    <label for="hero-button2">Texto Botón 2:</label>
+                                    <input type="text" id="hero-button2" name="hero-button2">
+                                </div>
+                            </div>
+                            
+                            <h4>🇽️ Imagen de Fondo del Banner</h4>
+                            <div class="form-group">
+                                <label>
+                                    <input type="checkbox" id="use-gradient" name="use-gradient" checked onchange="toggleBackgroundType()"> 
+                                    Usar gradiente (desmarca para usar imagen personalizada)
+                                </label>
+                            </div>
+                            <div class="form-group" id="background-image-field" style="display: none;">
+                                <label for="hero-background-image">URL de Imagen de Fondo:</label>
+                                <input type="url" id="hero-background-image" name="hero-background-image" placeholder="https://scontent.cdninstagram.com/..." onchange="previewHeroBackground()">
+                                <small style="color: #666; font-size: 12px;">
+                                    💡 <strong>Cómo obtener URL de Instagram:</strong><br>
+                                    1. Ve a Instagram en el navegador<br>
+                                    2. Haz click derecho en la imagen → "Inspeccionar"<br>
+                                    3. Busca la etiqueta &lt;img&gt; y copia la URL del atributo "src"
+                                </small>
+                            </div>
+                            <div id="hero-background-preview" class="image-preview" style="display: none;">
+                                <label>Vista Previa:</label>
+                                <img id="hero-background-preview-img" alt="Vista previa" style="max-width: 300px; max-height: 150px; border-radius: 8px; object-fit: cover; border: 2px solid #e9ecef;">
+                            </div>
+                            
+                            <button type="submit" class="btn btn-primary">Guardar Hero</button>
+                        </form>
+                    </div>
+
+                    <!-- Sección Productos -->
+                    <div class="form-card">
+                        <h3>🌿 Sección Productos</h3>
+                        <form id="products-section-form">
+                            <div class="form-group">
+                                <label for="products-title">Título:</label>
+                                <input type="text" id="products-title" name="products-title">
+                            </div>
+                            <div class="form-group">
+                                <label for="products-subtitle">Subtítulo:</label>
+                                <input type="text" id="products-subtitle" name="products-subtitle">
+                            </div>
+                            <button type="submit" class="btn btn-primary">Guardar Sección Productos</button>
+                        </form>
+                    </div>
+
+                    <div class="form-card">
+                        <h3>🕉️ Sección Ceremonias</h3>
+                        <form id="ceremonies-section-form">
+                            <div class="form-group">
+                                <label for="ceremonies-title">Título:</label>
+                                <input type="text" id="ceremonies-title" name="ceremonies-title">
+                            </div>
+                            <div class="form-group">
+                                <label for="ceremonies-subtitle">Subtítulo:</label>
+                                <input type="text" id="ceremonies-subtitle" name="ceremonies-subtitle">
+                            </div>
+                            <button type="submit" class="btn btn-primary">Guardar Sección Ceremonias</button>
+                        </form>
+                    </div>
+
+                    <!-- Sección Nosotros Expandida -->
+                    <div class="form-card">
+                        <h3>📖 Sección Nosotros</h3>
+                        <form id="about-form">
+                            <div class="form-group">
+                                <label for="about-title">Título:</label>
+                                <input type="text" id="about-title" name="about-title">
+                            </div>
+                            <div class="form-group">
+                                <label for="about-text1">Primer párrafo:</label>
+                                <textarea id="about-text1" name="about-text1" rows="3"></textarea>
+                            </div>
+                            <div class="form-group">
+                                <label for="about-text2">Segundo párrafo:</label>
+                                <textarea id="about-text2" name="about-text2" rows="3"></textarea>
+                            </div>
+                            
+                            <h4>🙏 Valores</h4>
+                            <div class="form-grid">
+                                <div class="form-group">
+                                    <label for="value1-icon">Valor 1 - Icono:</label>
+                                    <input type="text" id="value1-icon" name="value1-icon" maxlength="2">
+                                </div>
+                                <div class="form-group">
+                                    <label for="value1-text">Valor 1 - Texto:</label>
+                                    <input type="text" id="value1-text" name="value1-text">
+                                </div>
+                                <div class="form-group">
+                                    <label for="value2-icon">Valor 2 - Icono:</label>
+                                    <input type="text" id="value2-icon" name="value2-icon" maxlength="2">
+                                </div>
+                                <div class="form-group">
+                                    <label for="value2-text">Valor 2 - Texto:</label>
+                                    <input type="text" id="value2-text" name="value2-text">
+                                </div>
+                                <div class="form-group">
+                                    <label for="value3-icon">Valor 3 - Icono:</label>
+                                    <input type="text" id="value3-icon" name="value3-icon" maxlength="2">
+                                </div>
+                                <div class="form-group">
+                                    <label for="value3-text">Valor 3 - Texto:</label>
+                                    <input type="text" id="value3-text" name="value3-text">
+                                </div>
+                            </div>
+                            
+                            <h4>🖼️ Imagen Placeholder</h4>
+                            <div class="form-grid">
+                                <div class="form-group">
+                                    <label for="placeholder-icon">Icono:</label>
+                                    <input type="text" id="placeholder-icon" name="placeholder-icon" maxlength="2">
+                                </div>
+                                <div class="form-group">
+                                    <label for="placeholder-text">Texto:</label>
+                                    <input type="text" id="placeholder-text" name="placeholder-text">
+                                </div>
+                            </div>
+                            <button type="submit" class="btn btn-primary">Guardar Sección Nosotros</button>
+                        </form>
+                    </div>
+
+                    <!-- Sección Contacto -->
+                    <div class="form-card">
+                        <h3>📞 Textos de Contacto</h3>
+                        <form id="contact-section-form">
+                            <div class="form-group">
+                                <label for="contact-section-title">Título de la Sección:</label>
+                                <input type="text" id="contact-section-title" name="contact-section-title">
+                            </div>
+                            <div class="form-grid">
+                                <div class="form-group">
+                                    <label for="contact-info-title">Título Info Contacto:</label>
+                                    <input type="text" id="contact-info-title" name="contact-info-title">
+                                </div>
+                                <div class="form-group">
+                                    <label for="contact-form-title">Título Formulario:</label>
+                                    <input type="text" id="contact-form-title" name="contact-form-title">
+                                </div>
+                            </div>
+                            
+                            <h4>📝 Placeholders del Formulario</h4>
+                            <div class="form-grid">
+                                <div class="form-group">
+                                    <label for="placeholder-name">Placeholder Nombre:</label>
+                                    <input type="text" id="placeholder-name" name="placeholder-name">
+                                </div>
+                                <div class="form-group">
+                                    <label for="placeholder-email">Placeholder Email:</label>
+                                    <input type="text" id="placeholder-email" name="placeholder-email">
+                                </div>
+                                <div class="form-group">
+                                    <label for="placeholder-phone">Placeholder Teléfono:</label>
+                                    <input type="text" id="placeholder-phone" name="placeholder-phone">
+                                </div>
+                                <div class="form-group">
+                                    <label for="placeholder-message">Placeholder Mensaje:</label>
+                                    <input type="text" id="placeholder-message" name="placeholder-message">
+                                </div>
+                                <div class="form-group">
+                                    <label for="contact-form-button">Texto Botón:</label>
+                                    <input type="text" id="contact-form-button" name="contact-form-button">
+                                </div>
+                            </div>
+                            <button type="submit" class="btn btn-primary">Guardar Textos Contacto</button>
+                        </form>
+                    </div>
+
+                    <!-- Footer -->
+                    <div class="form-card">
+                        <h3>🦶 Footer</h3>
+                        <form id="footer-form">
+                            <div class="form-group">
+                                <label for="footer-brand-text">Texto de la marca:</label>
+                                <input type="text" id="footer-brand-text" name="footer-brand-text">
+                            </div>
+                            <div class="form-grid">
+                                <div class="form-group">
+                                    <label for="footer-links-title">Título Enlaces:</label>
+                                    <input type="text" id="footer-links-title" name="footer-links-title">
+                                </div>
+                                <div class="form-group">
+                                    <label for="footer-contact-title">Título Contacto:</label>
+                                    <input type="text" id="footer-contact-title" name="footer-contact-title">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="footer-copyright">Copyright:</label>
+                                <input type="text" id="footer-copyright" name="footer-copyright">
+                            </div>
+                            <button type="submit" class="btn btn-primary">Guardar Footer</button>
+                        </form>
+                    </div>
+
+                    <!-- Carrito -->
+                    <div class="form-card">
+                        <h3>🛒 Textos del Carrito</h3>
+                        <form id="cart-form">
+                            <div class="form-group">
+                                <label for="cart-title">Título Modal:</label>
+                                <input type="text" id="cart-title" name="cart-title">
+                            </div>
+                            <div class="form-grid">
+                                <div class="form-group">
+                                    <label for="cart-total-text">Texto Total:</label>
+                                    <input type="text" id="cart-total-text" name="cart-total-text">
+                                </div>
+                                <div class="form-group">
+                                    <label for="cart-button-text">Icono Botón:</label>
+                                    <input type="text" id="cart-button-text" name="cart-button-text" maxlength="2">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="cart-empty-message">Mensaje Carrito Vacío:</label>
+                                <input type="text" id="cart-empty-message" name="cart-empty-message">
+                            </div>
+                            
+                            <h4>🔘 Botones</h4>
+                            <div class="form-grid">
+                                <div class="form-group">
+                                    <label for="cart-clear-btn">Botón Vaciar:</label>
+                                    <input type="text" id="cart-clear-btn" name="cart-clear-btn">
+                                </div>
+                                <div class="form-group">
+                                    <label for="cart-continue-btn">Botón Continuar:</label>
+                                    <input type="text" id="cart-continue-btn" name="cart-continue-btn">
+                                </div>
+                                <div class="form-group">
+                                    <label for="cart-checkout-btn">Botón Finalizar:</label>
+                                    <input type="text" id="cart-checkout-btn" name="cart-checkout-btn">
+                                </div>
+                            </div>
+                            <button type="submit" class="btn btn-primary">Guardar Textos Carrito</button>
+                        </form>
+                    </div>
+
+                    <!-- Título de Página -->
+                    <div class="form-card">
+                        <h3>🏷️ Título de la Página</h3>
+                        <form id="page-title-form">
+                            <div class="form-group">
+                                <label for="page-title">Título (aparece en la pestaña del navegador):</label>
+                                <input type="text" id="page-title" name="page-title">
+                            </div>
+                            <button type="submit" class="btn btn-primary">Guardar Título</button>
+                        </form>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Contact Section -->
+            <section id="contacto-section" class="admin-section">
+                <h2>📞 Información de Contacto</h2>
+                <form id="contact-form" class="contact-form">
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label for="phone">Teléfono:</label>
+                            <input type="tel" id="phone" name="phone" value="+54 11 2345-6789">
+                        </div>
+                        <div class="form-group">
+                            <label for="email">Email:</label>
+                            <input type="email" id="email" name="email" value="medicina@hijosdelsol.com">
+                        </div>
+                        <div class="form-group">
+                            <label for="address">Dirección:</label>
+                            <input type="text" id="address" name="address" value="Buenos Aires, Argentina">
+                        </div>
+                        <div class="form-group">
+                            <label for="instagram">Instagram:</label>
+                            <input type="text" id="instagram" name="instagram" value="@hijosdelsol.ceremonias">
+                        </div>
+                        <div class="form-group">
+                            <label for="whatsapp">WhatsApp:</label>
+                            <input type="tel" id="whatsapp" name="whatsapp" value="5491123456789">
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Guardar Cambios</button>
+                </form>
+            </section>
+        </main>
+    </div>
+
+    <!-- Product Modal -->
+    <div id="product-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="product-modal-title">Editar Producto</h3>
+                <span class="modal-close">&times;</span>
+            </div>
+            <div class="modal-body">
+                <form id="product-form">
+                    <input type="hidden" id="product-id" name="product-id">
+                    <div class="form-group">
+                        <label for="product-name">Nombre del Producto:</label>
+                        <input type="text" id="product-name" name="product-name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="image-type">Tipo de Imagen:</label>
+                        <select id="image-type" name="image-type" onchange="toggleImageFields()">
+                            <option value="emoji">Emoji</option>
+                            <option value="url">URL de Imagen</option>
+                        </select>
+                    </div>
+                    <div class="form-group" id="emoji-field">
+                        <label for="product-emoji">Emoji:</label>
+                        <input type="text" id="product-emoji" name="product-emoji" maxlength="2" placeholder="🌿">
+                    </div>
+                    <div class="form-group" id="image-url-field" style="display: none;">
+                        <label for="product-image-url">URL de la Imagen:</label>
+                        <input type="url" id="product-image-url" name="product-image-url" placeholder="https://ejemplo.com/imagen.jpg">
+                    </div>
+                    <div class="form-group" id="image-preview" style="display: none;">
+                        <label>Vista Previa:</label>
+                        <img id="product-image-preview" style="max-width: 100%; max-height: 200px; border-radius: 10px; border: 2px solid #e9ecef;" alt="Vista previa">
+                    </div>
+                    <div class="form-group">
+                        <label for="product-price">Precio ($):</label>
+                        <input type="number" id="product-price" name="product-price" min="0" step="100" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="product-description">Descripción:</label>
+                        <textarea id="product-description" name="product-description" rows="3" required></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="product-features">Características (separadas por coma):</label>
+                        <input type="text" id="product-features" name="product-features" placeholder="Claridad Mental, Conexión Espiritual">
+                    </div>
+                    <div class="form-group">
+                        <label for="product-stock">Estado del Stock:</label>
+                        <select id="product-stock" name="product-stock">
+                            <option value="En Stock">En Stock</option>
+                            <option value="Pocas Unidades">Pocas Unidades</option>
+                            <option value="Agotado">Agotado</option>
+                        </select>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary modal-close">Cancelar</button>
+                <button type="submit" form="product-form" class="btn btn-primary">Guardar</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Ceremony Modal -->
+    <div id="ceremony-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="ceremony-modal-title">Editar Ceremonia</h3>
+                <span class="modal-close">&times;</span>
+            </div>
+            <div class="modal-body">
+                <form id="ceremony-form">
+                    <input type="hidden" id="ceremony-id" name="ceremony-id">
+                    <div class="form-group">
+                        <label for="ceremony-name">Nombre de la Ceremonia:</label>
+                        <input type="text" id="ceremony-name" name="ceremony-name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="ceremony-date">Fecha:</label>
+                        <input type="date" id="ceremony-date" name="ceremony-date" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="ceremony-time">Horario:</label>
+                        <input type="text" id="ceremony-time" name="ceremony-time" placeholder="18:00 - 22:00 hs" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="ceremony-location">Ubicación:</label>
+                        <input type="text" id="ceremony-location" name="ceremony-location" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="ceremony-facilitator">Facilitador:</label>
+                        <input type="text" id="ceremony-facilitator" name="ceremony-facilitator" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="ceremony-description">Descripción:</label>
+                        <textarea id="ceremony-description" name="ceremony-description" rows="4" required></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="ceremony-image-url">URL de Imagen (opcional):</label>
+                        <input type="url" id="ceremony-image-url" name="ceremony-image-url" placeholder="https://ejemplo.com/ceremonia.jpg" onchange="previewCeremonyImage()">
+                    </div>
+                    <div class="form-group" id="ceremony-image-preview" style="display: none;">
+                        <label>Vista Previa de Imagen:</label>
+                        <img id="ceremony-preview-img" style="max-width: 100%; max-height: 200px; border-radius: 10px; border: 2px solid #e9ecef;" alt="Vista previa ceremonia">
+                    </div>
+                    <div class="form-group">
+                        <label for="ceremony-price">Precio ($):</label>
+                        <input type="number" id="ceremony-price" name="ceremony-price" min="0" step="100" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="ceremony-spots">Cupos Disponibles:</label>
+                        <input type="number" id="ceremony-spots" name="ceremony-spots" min="1" required>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary modal-close">Cancelar</button>
+                <button type="submit" form="ceremony-form" class="btn btn-primary">Guardar</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Import Modal -->
+    <div id="import-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>📤 Importar Datos</h3>
+                <span class="modal-close">&times;</span>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label for="import-file">Seleccionar archivo JSON:</label>
+                    <input type="file" id="import-file" accept=".json">
+                </div>
+                <div class="form-group">
+                    <label for="import-text">O pegar datos JSON:</label>
+                    <textarea id="import-text" rows="10" placeholder='{"products": {...}, "ceremonies": {...}}'></textarea>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary modal-close">Cancelar</button>
+                <button type="button" id="import-confirm" class="btn btn-primary">Importar</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Success/Error Messages -->
+    <div id="message-container"></div>
+
+    <script src="admin-script.js"></script>
+    
+    <!-- PWA Service Worker Registration (mismo que el sitio principal) -->
+    <script>
+        // Registro del Service Worker para el admin también
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('/sw.js')
+                    .then((registration) => {
+                        console.log('[PWA Admin] Service Worker registrado exitosamente:', registration.scope);
+                    })
+                    .catch((error) => {
+                        console.log('[PWA Admin] Error al registrar Service Worker:', error);
+                    });
+            });
+        }
+    </script>
+</body>
+</html>

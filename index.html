@@ -1,0 +1,536 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <!-- PWA Meta Tags -->
+    <meta name="description" content="Medicina natural y ceremonias de sanación con plantas sagradas. Conecta con la medicina ancestral en un espacio sagrado de transformación.">
+    <meta name="keywords" content="medicina natural, rapé, ceremonias sagradas, sanación, plantas sagradas, medicina ancestral">
+    <meta name="author" content="Hijos del Sol">
+    
+    <!-- PWA Manifest -->
+    <link rel="manifest" href="manifest.json">
+    
+    <!-- Theme Colors -->
+    <meta name="theme-color" content="#228B22">
+    <meta name="msapplication-TileColor" content="#228B22">
+    <meta name="msapplication-navbutton-color" content="#228B22">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    
+    <!-- PWA Icons -->
+    <link rel="icon" type="image/x-icon" href="icons/favicon.ico">
+    <link rel="icon" type="image/png" sizes="32x32" href="icons/icon-192x192.png">
+    <link rel="apple-touch-icon" href="icons/icon-192x192.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="icons/icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="96x96" href="icons/icon-96x96.png">
+    <link rel="apple-touch-icon" sizes="128x128" href="icons/icon-128x128.png">
+    <link rel="apple-touch-icon" sizes="144x144" href="icons/icon-144x144.png">
+    <link rel="apple-touch-icon" sizes="152x152" href="icons/icon-152x152.png">
+    <link rel="apple-touch-icon" sizes="192x192" href="icons/icon-192x192.png">
+    <link rel="apple-touch-icon" sizes="384x384" href="icons/icon-384x384.png">
+    <link rel="apple-touch-icon" sizes="512x512" href="icons/icon-512x512.png">
+    
+    <!-- PWA App Capabilities -->
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-title" content="Hijos del Sol">
+    
+    <!-- Open Graph Meta Tags -->
+    <meta property="og:title" content="☀️ Hijos del Sol - Medicina Natural">
+    <meta property="og:description" content="Conecta con la medicina ancestral en un espacio sagrado de sanación y transformación">
+    <meta property="og:image" content="icons/icon-512x512.png">
+    <meta property="og:url" content="https://hijos-del-sol.netlify.app">
+    <meta property="og:type" content="website">
+    
+    <!-- Twitter Card Meta Tags -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="☀️ Hijos del Sol - Medicina Natural">
+    <meta name="twitter:description" content="Medicina ancestral y ceremonias de sanación">
+    <meta name="twitter:image" content="icons/icon-512x512.png">
+    
+    <title>☀️ Hijos del Sol - Ceremonias Sagradas</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="container">
+            <div class="nav-brand">
+                <h2>☀️ Hijos del Sol</h2>
+            </div>
+            <div class="nav-menu" id="nav-menu">
+                <a href="#inicio" class="nav-link">Inicio</a>
+                <a href="#productos" class="nav-link">Productos</a>
+                <a href="#ceremonias" class="nav-link">Ceremonias</a>
+                <a href="#nosotros" class="nav-link">Nosotros</a>
+                <a href="#contacto" class="nav-link">Contacto</a>
+            </div>
+            <div class="nav-toggle" id="nav-toggle">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="inicio" class="hero">
+        <div class="hero-content">
+            <h1 class="hero-title">☀️ Hijos del Sol</h1>
+            <p class="hero-subtitle">Conecta con la medicina ancestral en un espacio sagrado de sanación, transformación y comunidad</p>
+            <div class="hero-buttons">
+                <a href="#productos" class="btn btn-primary">Explorar Productos</a>
+                <a href="#ceremonias" class="btn btn-secondary">Ver Ceremonias</a>
+            </div>
+        </div>
+        <div class="hero-bg"></div>
+    </section>
+
+    <!-- Products Section -->
+    <section id="productos" class="products">
+        <div class="container">
+            <h2 class="section-title">🌿 Nuestros Productos Sagrados</h2>
+            <p class="section-subtitle">Medicina ancestral de las tradiciones amazónicas</p>
+            
+            <div class="products-grid">
+                <div class="product-card" data-product="nukini">
+                    <div class="product-image">🌿</div>
+                    <h3>Rapé Nukini</h3>
+                    <p class="product-description">Rapé tradicional de la tribu Nukini, conocido por su efecto clarificador y equilibrante.</p>
+                    <div class="product-features">
+                        <span class="feature">Claridad Mental</span>
+                        <span class="feature">Conexión Espiritual</span>
+                    </div>
+                    <div class="product-price">
+                        <span class="price">$2.500</span>
+                        <span class="stock">En Stock</span>
+                    </div>
+                    <button class="btn btn-product" onclick="addToCart('nukini')">Agregar al Carrito</button>
+                </div>
+
+                <div class="product-card" data-product="huni-kuin">
+                    <div class="product-image">🍃</div>
+                    <h3>Rapé Huni Kuin</h3>
+                    <p class="product-description">Medicina sagrada de la tribu Huni Kuin del Acre, Brasil. Elaborado con plantas medicinales.</p>
+                    <div class="product-features">
+                        <span class="feature">Introspección</span>
+                        <span class="feature">Sanación</span>
+                    </div>
+                    <div class="product-price">
+                        <span class="price">$2.800</span>
+                        <span class="stock">En Stock</span>
+                    </div>
+                    <button class="btn btn-product" onclick="addToCart('huni-kuin')">Agregar al Carrito</button>
+                </div>
+
+                <div class="product-card" data-product="kaxinawa">
+                    <div class="product-image">🌱</div>
+                    <h3>Rapé Kaxinawá</h3>
+                    <p class="product-description">Preparación especial de la nación Kaxinawá, ideal para ceremonias de poder y conexión.</p>
+                    <div class="product-features">
+                        <span class="feature">Poder Personal</span>
+                        <span class="feature">Protección</span>
+                    </div>
+                    <div class="product-price">
+                        <span class="price">$3.000</span>
+                        <span class="stock">En Stock</span>
+                    </div>
+                    <button class="btn btn-product" onclick="addToCart('kaxinawa')">Agregar al Carrito</button>
+                </div>
+
+                <div class="product-card" data-product="yawanawa">
+                    <div class="product-image">🌺</div>
+                    <h3>Rapé Yawanawá</h3>
+                    <p class="product-description">Medicina femenina sagrada de la tribu Yawanawá, conocida por su suavidad y profundidad.</p>
+                    <div class="product-features">
+                        <span class="feature">Energía Femenina</span>
+                        <span class="feature">Intuición</span>
+                    </div>
+                    <div class="product-price">
+                        <span class="price">$2.700</span>
+                        <span class="stock">En Stock</span>
+                    </div>
+                    <button class="btn btn-product" onclick="addToCart('yawanawa')">Agregar al Carrito</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Ceremonies Section -->
+    <section id="ceremonias" class="ceremonies">
+        <div class="container">
+            <h2 class="section-title">🕉️ Ceremonias Sagradas</h2>
+            <p class="section-subtitle">Espacios de sanación y transformación</p>
+            
+            <div class="ceremonies-grid">
+                <div class="ceremony-card">
+                    <div class="ceremony-date">
+                        <span class="day">15</span>
+                        <span class="month">MAR</span>
+                    </div>
+                    <div class="ceremony-content">
+                        <h3>Ceremonia de Luna Nueva</h3>
+                        <div class="ceremony-details">
+                            <p>🗓️ Sábado, 15 de marzo 2025</p>
+                            <p>🕐 16:00 - 20:00 hs</p>
+                            <p>📍 Centro Ceremonial Pachamama, Buenos Aires</p>
+                            <p>👥 Facilitador: Shamán Carlos Nukini</p>
+                        </div>
+                        <div class="ceremony-description">
+                            <p>Ceremonia especial de luna nueva para liberar lo que ya no sirve y manifestar nuevas intenciones. Incluye medicina de rapé, cantos sagrados y meditación.</p>
+                        </div>
+                        <div class="ceremony-footer">
+                            <div class="ceremony-price">
+                                <span class="price">$8.500</span>
+                                <span class="spots">12 cupos disponibles</span>
+                            </div>
+                            <button class="btn btn-ceremony" onclick="reserveCeremony('luna-nueva')">Reservar Lugar</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="ceremony-card">
+                    <div class="ceremony-date">
+                        <span class="day">22</span>
+                        <span class="month">MAR</span>
+                    </div>
+                    <div class="ceremony-content">
+                        <h3>Círculo de Medicina Sagrada</h3>
+                        <div class="ceremony-details">
+                            <p>🗓️ Sábado, 22 de marzo 2025</p>
+                            <p>🕐 18:00 - 22:00 hs</p>
+                            <p>📍 Centro Holístico Madre Tierra, CABA</p>
+                            <p>👥 Facilitadora: María Luz Yawanawá</p>
+                        </div>
+                        <div class="ceremony-description">
+                            <p>Círculo íntimo de medicina con enfoque en la sanación del corazón. Trabajo con rapé, cacao sagrado y sonidos ancestrales.</p>
+                        </div>
+                        <div class="ceremony-footer">
+                            <div class="ceremony-price">
+                                <span class="price">$6.500</span>
+                                <span class="spots">8 cupos disponibles</span>
+                            </div>
+                            <button class="btn btn-ceremony" onclick="reserveCeremony('circulo-medicina')">Reservar Lugar</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="ceremony-card">
+                    <div class="ceremony-date">
+                        <span class="day">05</span>
+                        <span class="month">ABR</span>
+                    </div>
+                    <div class="ceremony-content">
+                        <h3>Ceremonia de Plenilunio</h3>
+                        <div class="ceremony-details">
+                            <p>🗓️ Sábado, 5 de abril 2025</p>
+                            <p>🕐 19:00 - 23:00 hs</p>
+                            <p>📍 Espacio Natural Sagrado, San Isidro</p>
+                            <p>👥 Facilitador: Abuelo Kaxinawá</p>
+                        </div>
+                        <div class="ceremony-description">
+                            <p>Ceremonia bajo la luna llena para potenciar la manifestación y la conexión con los ancestros. Medicina de rapé y tambores.</p>
+                        </div>
+                        <div class="ceremony-footer">
+                            <div class="ceremony-price">
+                                <span class="price">$9.500</span>
+                                <span class="spots">15 cupos disponibles</span>
+                            </div>
+                            <button class="btn btn-ceremony" onclick="reserveCeremony('plenilunio')">Reservar Lugar</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="nosotros" class="about">
+        <div class="container">
+            <div class="about-content">
+                <div class="about-text">
+                    <h2>🌞 Nuestra Misión</h2>
+                    <p>Somos Hijos del Sol, una comunidad dedicada a preservar y compartir las tradiciones ancestrales de medicina sagrada. Trabajamos con respeto profundo hacia las culturas originarias y sus enseñanzas.</p>
+                    <p>Nuestro compromiso es crear espacios seguros de sanación donde cada persona pueda conectar con su esencia y recibir la medicina que necesita para su crecimiento espiritual.</p>
+                    <div class="values">
+                        <div class="value">
+                            <span class="value-icon">🙏</span>
+                            <span>Respeto Ancestral</span>
+                        </div>
+                        <div class="value">
+                            <span class="value-icon">💚</span>
+                            <span>Sanación Auténtica</span>
+                        </div>
+                        <div class="value">
+                            <span class="value-icon">🌱</span>
+                            <span>Crecimiento Espiritual</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="about-image">
+                    <div class="image-placeholder">
+                        <span>🌞</span>
+                        <p>Espacio de medicina sagrada</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contacto" class="contact">
+        <div class="container">
+            <h2 class="section-title">📞 Conecta con Nosotros</h2>
+            <div class="contact-grid">
+                <div class="contact-info">
+                    <h3>Información de Contacto</h3>
+                    <div class="contact-item">
+                        <span class="contact-icon">📱</span>
+                        <span>+54 11 2345-6789</span>
+                    </div>
+                    <div class="contact-item">
+                        <span class="contact-icon">📧</span>
+                        <span>medicina@hijosdelsol.com</span>
+                    </div>
+                    <div class="contact-item">
+                        <span class="contact-icon">📍</span>
+                        <span>Buenos Aires, Argentina</span>
+                    </div>
+                    <div class="contact-item">
+                        <span class="contact-icon">🌐</span>
+                        <span>@hijosdelsol.ceremonias</span>
+                    </div>
+                </div>
+                
+                <div class="contact-form">
+                    <h3>Envíanos un Mensaje</h3>
+                    <form id="contact-form">
+                        <div class="form-group">
+                            <input type="text" id="name" name="name" placeholder="Tu nombre" required>
+                        </div>
+                        <div class="form-group">
+                            <input type="email" id="email" name="email" placeholder="Tu email" required>
+                        </div>
+                        <div class="form-group">
+                            <input type="tel" id="phone" name="phone" placeholder="Tu teléfono">
+                        </div>
+                        <div class="form-group">
+                            <textarea id="message" name="message" placeholder="Tu mensaje o consulta" rows="4" required></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Enviar Mensaje</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>☀️ Hijos del Sol <small><a href="admin.html" class="admin-link">Admin</a></small></h3>
+                    <p>Medicina ancestral con respeto y tradición</p>
+                </div>
+                <div class="footer-section">
+                    <h4>Enlaces</h4>
+                    <a href="#productos">Productos</a>
+                    <a href="#ceremonias">Ceremonias</a>
+                    <a href="#nosotros">Nosotros</a>
+                </div>
+                <div class="footer-section">
+                    <h4>Contacto</h4>
+                    <p>Buenos Aires, Argentina</p>
+                    <p>medicina@hijosdelsol.com</p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 Hijos del Sol. Todos los derechos reservados.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Admin Button (oculto, ahora usamos el sol del footer) -->
+    <!--
+    <div id="admin-button" class="admin-access">
+        <a href="admin.html" title="Administrar sitio">
+            <span>⚙️</span>
+        </a>
+    </div>
+    -->
+
+    <!-- Cart Modal -->
+    <div id="cart-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>🛒 Carrito de Compras</h3>
+                <span class="modal-close" onclick="closeCart()">&times;</span>
+            </div>
+            <div class="modal-body">
+                <div id="cart-items"></div>
+                <div class="cart-total">
+                    <strong>Total: $<span id="cart-total">0</span></strong>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-danger" onclick="clearCart()" style="margin-right: auto;">🗑️ Vaciar</button>
+                <button class="btn btn-secondary" onclick="closeCart()">Seguir Comprando</button>
+                <button class="btn btn-primary" onclick="checkout()">Finalizar Compra</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Cart Button -->
+    <button id="cart-button" class="cart-button" onclick="openCart()">
+        🛒 <span id="cart-count">0</span>
+    </button>
+
+    <!-- PWA Install Banner -->
+    <div id="pwa-banner" class="pwa-banner hidden">
+        <div class="pwa-banner-content">
+            <div class="pwa-banner-icon">📱</div>
+            <div class="pwa-banner-text">
+                <h4>¡Instala Hijos del Sol!</h4>
+                <p>Accede fácilmente a nuestros productos y ceremonias desde tu dispositivo</p>
+            </div>
+            <div class="pwa-banner-buttons">
+                <button id="pwa-install-btn" class="btn btn-primary">Instalar</button>
+                <button id="pwa-dismiss-btn" class="btn btn-secondary">Ahora no</button>
+            </div>
+        </div>
+        <button id="pwa-close-btn" class="pwa-close">&times;</button>
+    </div>
+
+    <script src="script.js"></script>
+    
+    <!-- PWA Service Worker Registration -->
+    <script>
+        // Registro del Service Worker
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('/sw.js')
+                    .then((registration) => {
+                        console.log('[PWA] Service Worker registrado exitosamente:', registration.scope);
+                        
+                        // Verificar actualizaciones del SW
+                        registration.addEventListener('updatefound', () => {
+                            const newWorker = registration.installing;
+                            newWorker.addEventListener('statechange', () => {
+                                if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
+                                    // Mostrar notificación de actualización disponible
+                                    showUpdateNotification();
+                                }
+                            });
+                        });
+                    })
+                    .catch((error) => {
+                        console.log('[PWA] Error al registrar Service Worker:', error);
+                    });
+            });
+        }
+
+        // Variables para el prompt de instalación PWA
+        let deferredPrompt;
+        const pwaBanner = document.getElementById('pwa-banner');
+        const installBtn = document.getElementById('pwa-install-btn');
+        const dismissBtn = document.getElementById('pwa-dismiss-btn');
+        const closeBtn = document.getElementById('pwa-close-btn');
+
+        // Detectar cuando la PWA puede ser instalada
+        window.addEventListener('beforeinstallprompt', (e) => {
+            console.log('[PWA] Evento beforeinstallprompt detectado');
+            e.preventDefault();
+            deferredPrompt = e;
+            
+            // Mostrar banner de instalación después de 3 segundos
+            setTimeout(() => {
+                showInstallBanner();
+            }, 3000);
+        });
+
+        // Función para mostrar el banner de instalación
+        function showInstallBanner() {
+            if (deferredPrompt && !localStorage.getItem('pwa-dismissed')) {
+                pwaBanner.classList.remove('hidden');
+                pwaBanner.classList.add('show');
+            }
+        }
+
+        // Manejar click en instalar
+        installBtn.addEventListener('click', async () => {
+            if (deferredPrompt) {
+                deferredPrompt.prompt();
+                const { outcome } = await deferredPrompt.userChoice;
+                console.log('[PWA] Resultado de instalación:', outcome);
+                
+                if (outcome === 'accepted') {
+                    console.log('[PWA] Usuario aceptó instalar la PWA');
+                } else {
+                    console.log('[PWA] Usuario rechazó instalar la PWA');
+                }
+                
+                deferredPrompt = null;
+                hideInstallBanner();
+            }
+        });
+
+        // Manejar click en "Ahora no"
+        dismissBtn.addEventListener('click', () => {
+            localStorage.setItem('pwa-dismissed', 'true');
+            hideInstallBanner();
+        });
+
+        // Manejar click en cerrar
+        closeBtn.addEventListener('click', () => {
+            hideInstallBanner();
+        });
+
+        // Función para ocultar el banner
+        function hideInstallBanner() {
+            pwaBanner.classList.remove('show');
+            pwaBanner.classList.add('hidden');
+        }
+
+        // Detectar cuando la PWA ha sido instalada
+        window.addEventListener('appinstalled', (evt) => {
+            console.log('[PWA] App instalada exitosamente');
+            hideInstallBanner();
+            // Opcional: mostrar mensaje de éxito
+            showMessage('¡Hijos del Sol instalado correctamente! 🌟', 'success');
+        });
+
+        // Función para mostrar notificación de actualización
+        function showUpdateNotification() {
+            const updateBanner = document.createElement('div');
+            updateBanner.className = 'update-banner';
+            updateBanner.innerHTML = `
+                <div class="update-content">
+                    <span>Nueva versión disponible</span>
+                    <button onclick="window.location.reload()" class="btn btn-sm btn-primary">Actualizar</button>
+                </div>
+            `;
+            document.body.appendChild(updateBanner);
+            
+            setTimeout(() => {
+                updateBanner.remove();
+            }, 10000);
+        }
+
+        // Función auxiliar para mostrar mensajes
+        function showMessage(text, type = 'info') {
+            const message = document.createElement('div');
+            message.className = `message ${type} pwa-message`;
+            message.textContent = text;
+            document.body.appendChild(message);
+            
+            setTimeout(() => {
+                message.remove();
+            }, 5000);
+        }
+    </script>
+</body>
+</html>
