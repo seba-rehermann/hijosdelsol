@@ -15,7 +15,7 @@ class GitHubSyncManager {
         // Configuración de GitHub
         this.githubConfig = {
             owner: 'seba-rehermann',  // Tu usuario de GitHub
-            repo: 'hijosdelsol',  // Nombre del repositorio
+            repo: 'hijosdelsol2',  // Nombre del repositorio
             branch: 'main',
             filePath: 'cms-data.json',
             token: this.getGitHubToken()
@@ -164,8 +164,9 @@ class GitHubSyncManager {
                 syncedBy: 'github-sync-v1'
             };
             
-            // Codificar el contenido en base64
-            const content = btoa(JSON.stringify(dataToSave, null, 2));
+    // Codificar el contenido en base64 (Unicode seguro)
+    const jsonString = JSON.stringify(data, null, 2);
+    const encodedContent = btoa(unescape(encodeURIComponent(jsonString)));
             
             const url = `${this.baseUrl}/repos/${this.githubConfig.owner}/${this.githubConfig.repo}/contents/${this.githubConfig.filePath}`;
             
@@ -176,7 +177,7 @@ class GitHubSyncManager {
             
             const requestBody = {
                 message: `🌞 Actualizar datos CMS - ${new Date().toLocaleString('es-AR')}`,
-                content: content,
+                content: encodedContent,
                 branch: this.githubConfig.branch
             };
             
