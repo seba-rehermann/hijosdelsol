@@ -1313,7 +1313,7 @@ function loadGitHubConfig() {
             const branchField = document.getElementById('github-branch');
             
             if (ownerField) ownerField.value = config.owner || 'seba-rehermann';
-            if (repoField) repoField.value = config.repo || 'hijosdelsol';
+            if (repoField) repoField.value = config.repo || 'hijosdelsol2';
             if (branchField) branchField.value = config.branch || 'main';
         } catch (e) {
             console.warn('Error cargando configuración de GitHub:', e);
