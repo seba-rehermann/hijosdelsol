@@ -164,9 +164,9 @@ class GitHubSyncManager {
                 syncedBy: 'github-sync-v1'
             };
             
-    // Codificar el contenido en base64 (Unicode seguro)
-    const jsonString = JSON.stringify(data, null, 2);
-    const encodedContent = btoa(unescape(encodeURIComponent(jsonString)));
+            // Codificar el contenido en base64 (Unicode seguro)
+            const jsonString = JSON.stringify(dataToSave, null, 2);
+            const encodedContent = btoa(unescape(encodeURIComponent(jsonString)));
             
             const url = `${this.baseUrl}/repos/${this.githubConfig.owner}/${this.githubConfig.repo}/contents/${this.githubConfig.filePath}`;
             
