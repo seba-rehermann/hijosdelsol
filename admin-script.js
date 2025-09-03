@@ -128,18 +128,18 @@ document.addEventListener('DOMContentLoaded', function() {
     console.log('✅ CMS Admin - Inicializado correctamente');
 });
 
-// Cargar datos desde CloudSyncManager
+// Cargar datos desde GitHubSyncManager
 function loadDataFromStorage() {
-    if (window.cloudSyncManager) {
-        const cloudData = window.cloudSyncManager.getData();
-        if (cloudData) {
-            currentData = { ...currentData, ...cloudData };
-            console.log('📁 Datos cargados desde CloudSyncManager');
+    if (window.githubSyncManager) {
+        const githubData = window.githubSyncManager.getData();
+        if (githubData) {
+            currentData = { ...currentData, ...githubData };
+            console.log('📁 Datos cargados desde GitHubSyncManager');
             return;
         }
     }
     
-    // Fallback a localStorage si CloudSyncManager no está disponible
+    // Fallback a localStorage si GitHubSyncManager no está disponible
     const savedData = localStorage.getItem(CMS_CONFIG.storageKey);
     if (savedData) {
         try {
@@ -153,15 +153,15 @@ function loadDataFromStorage() {
     }
 }
 
-// Guardar datos usando CloudSyncManager
+// Guardar datos usando GitHubSyncManager
 async function saveDataToStorage() {
     try {
-        // Usar CloudSyncManager si está disponible
-        if (window.cloudSyncManager && typeof window.cloudSyncManager.updateData === 'function') {
-            const result = await window.cloudSyncManager.updateData(currentData);
+        // Usar GitHubSyncManager si está disponible
+        if (window.githubSyncManager && typeof window.githubSyncManager.updateData === 'function') {
+            const result = await window.githubSyncManager.updateData(currentData);
             if (result) {
-                console.log('💾☁️ Datos guardados y sincronizados en la nube');
-                showMessage('☁️ Datos sincronizados en la nube', 'success');
+                console.log('💾☁️ Datos guardados y sincronizados con GitHub');
+                showMessage('☁️ Datos sincronizados con GitHub', 'success');
             } else {
                 console.log('💾 Datos guardados localmente (sin conexión)'); 
             }
@@ -1491,11 +1491,37 @@ function updateLastSyncTime() {
 window.getCMSData = getCMSData;
 window.updateCMSData = updateCMSData;
 
+// Escuchar cambios de datos desde GitHubSyncManager
+document.addEventListener('cmsDataUpdate', function(event) {
+    console.log('📡 Datos actualizados desde GitHubSyncManager:', event.detail);
+    
+    // Actualizar datos locales
+    if (event.detail.data) {
+        currentData = { ...currentData, ...event.detail.data };
+        
+        // Recargar el contenido en el admin si estamos logueados
+        if (isLoggedIn) {
+            loadAllContent();
+        }
+        
+        console.log('✅ Datos del admin actualizados desde GitHub');
+    }
+});
+
 // Inicializar configuración de GitHub cuando sea necesario
 document.addEventListener('DOMContentLoaded', function() {
     // Esperar un poco para que el GitHub Sync Manager se inicialice
     setTimeout(() => {
         initGitHubConfigListeners();
+        
+        // Cargar datos desde GitHubSyncManager si está disponible
+        if (window.githubSyncManager) {
+            const githubData = window.githubSyncManager.getData();
+            if (githubData && Object.keys(githubData).length > 0) {
+                currentData = { ...currentData, ...githubData };
+                console.log('🔄 Datos sincronizados desde GitHubSyncManager en inicialización');
+            }
+        }
     }, 500);
 });
 
