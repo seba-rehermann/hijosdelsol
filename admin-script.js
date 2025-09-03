@@ -498,6 +498,10 @@ function showSection(sectionName) {
         case 'contacto':
             loadContactForm();
             break;
+        case 'github':
+            loadGitHubConfig();
+            updateGitHubStatus();
+            break;
     }
 }
 

@@ -467,6 +467,100 @@
                 </form>
             </section>
 
+            <!-- GitHub Section -->
+            <section id="github-section" class="admin-section">
+                <h2>🐙 Sincronización con GitHub</h2>
+                <p class="form-description">
+                    Configura la sincronización automática con GitHub para mantener tus datos seguros y sincronizados entre dispositivos.
+                </p>
+                
+                <div class="sync-status" id="github-status" style="background: #f8f9fa; padding: 15px; border-radius: 8px; margin-bottom: 20px; display: flex; align-items: center; gap: 10px;">
+                    <div class="status-indicator" id="github-status-icon" style="font-size: 20px;">❌</div>
+                    <span id="github-status-text" style="font-weight: 500;">No configurado</span>
+                </div>
+                
+                <div class="form-card">
+                    <form id="github-config-form">
+                        <div class="form-group">
+                            <label for="github-owner">Usuario de GitHub:</label>
+                            <input type="text" id="github-owner" name="github-owner" value="seba-rehermann" required>
+                            <small style="color: #666; font-size: 12px;">Tu nombre de usuario en GitHub</small>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="github-repo">Nombre del Repositorio:</label>
+                            <input type="text" id="github-repo" name="github-repo" value="hijosdelsol" required>
+                            <small style="color: #666; font-size: 12px;">Nombre del repositorio donde se guardarán los datos</small>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="github-token">Token de Acceso Personal:</label>
+                            <input type="password" id="github-token" name="github-token" placeholder="ghp_xxxxxxxxxxxx" required>
+                            <small style="color: #666; font-size: 12px;">
+                                <strong>Cómo obtener el token:</strong><br>
+                                1. Ve a GitHub → Settings → Developer settings → Personal access tokens<br>
+                                2. Generate new token → Classic<br>
+                                3. Permisos necesarios: <code>repo</code> (Full control of private repositories)
+                            </small>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="github-branch">Rama:</label>
+                            <input type="text" id="github-branch" name="github-branch" value="main" required>
+                        </div>
+                        
+                        <div class="form-actions" style="display: flex; gap: 10px; flex-wrap: wrap;">
+                            <button type="submit" class="btn btn-primary">💾 Guardar Configuración</button>
+                            <button type="button" id="test-github-connection" class="btn btn-secondary">🔍 Probar Conexión</button>
+                            <button type="button" id="force-sync-github" class="btn btn-success" disabled>🔄 Sincronizar Ahora</button>
+                        </div>
+                    </form>
+                </div>
+                
+                <!-- Backup Settings -->
+                <div class="form-card" style="margin-top: 30px;">
+                    <h3>💾 Información de Respaldos</h3>
+                    <div class="backup-info" style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 20px;">
+                        <div class="backup-stat" style="padding: 15px; background: #f8f9fa; border-radius: 8px;">
+                            <span class="stat-label" style="display: block; color: #666; font-size: 12px;">Último respaldo:</span>
+                            <span class="stat-value" id="last-backup" style="font-weight: 600; color: #333;">Nunca</span>
+                        </div>
+                        <div class="backup-stat" style="padding: 15px; background: #f8f9fa; border-radius: 8px;">
+                            <span class="stat-label" style="display: block; color: #666; font-size: 12px;">Tamaño de datos:</span>
+                            <span class="stat-value" id="data-size-config" style="font-weight: 600; color: #333;">0 KB</span>
+                        </div>
+                    </div>
+                    
+                    <div class="form-actions" style="display: flex; gap: 10px;">
+                        <button type="button" id="create-backup" class="btn btn-secondary">📥 Crear Respaldo Local</button>
+                        <button type="button" id="auto-backup-toggle" class="btn btn-secondary">⚡ Respaldo Automático: OFF</button>
+                    </div>
+                </div>
+                
+                <!-- System Information -->
+                <div class="form-card" style="margin-top: 30px;">
+                    <h3>ℹ️ Información del Sistema</h3>
+                    <div class="system-info" style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+                        <div class="info-item" style="display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid #eee;">
+                            <span class="info-label" style="color: #666;">Versión:</span>
+                            <span class="info-value" id="system-version" style="font-weight: 500;">1.0-github-sync</span>
+                        </div>
+                        <div class="info-item" style="display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid #eee;">
+                            <span class="info-label" style="color: #666;">Última actualización:</span>
+                            <span class="info-value" id="last-update" style="font-weight: 500;">-</span>
+                        </div>
+                        <div class="info-item" style="display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid #eee;">
+                            <span class="info-label" style="color: #666;">Estado de conexión:</span>
+                            <span class="info-value" id="connection-status" style="font-weight: 500;">En línea</span>
+                        </div>
+                        <div class="info-item" style="display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid #eee;">
+                            <span class="info-label" style="color: #666;">Dispositivo:</span>
+                            <span class="info-value" id="device-info" style="font-weight: 500;">Desktop</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
             <!-- Configuration Section -->
             <section id="configuracion-section" class="admin-section">
                 <h2>⚙️ Configuración del Sistema</h2>
