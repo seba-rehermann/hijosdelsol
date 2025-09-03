@@ -106,39 +106,70 @@ let products = {};
 let ceremonies = {};
 let cmsData = null;
 
-// Función para cargar datos del CMS
+// Función para cargar datos del CMS (ahora usa DataManager)
 function loadCMSData() {
-    const savedData = localStorage.getItem('hijosdelsol_cms_data');
-    if (savedData) {
-        try {
-            cmsData = JSON.parse(savedData);
-            
-            // Convertir productos del CMS al formato del sitio
-            if (cmsData.products) {
-                products = {};
-                Object.values(cmsData.products).forEach(product => {
-                    products[product.id] = {
-                        name: product.name,
-                        price: product.price,
-                        image: product.emoji,
-                        imageType: product.imageType || 'emoji',
-                        imageUrl: product.imageUrl || '',
-                        description: product.description,
-                        features: product.features || [],
-                        stock: product.stock || 'En Stock'
-                    };
-                });
+    // Esperar a que DataManager esté listo
+    if (window.dataManager) {
+        cmsData = window.dataManager.getData();
+        
+        // Convertir productos del CMS al formato del sitio
+        if (cmsData.products) {
+            products = {};
+            Object.values(cmsData.products).forEach(product => {
+                products[product.id] = {
+                    name: product.name,
+                    price: product.price,
+                    image: product.emoji,
+                    imageType: product.imageType || 'emoji',
+                    imageUrl: product.imageUrl || '',
+                    description: product.description,
+                    features: product.features || [],
+                    stock: product.stock || 'En Stock'
+                };
+            });
+        }
+        
+        // Cargar ceremonias del CMS
+        if (cmsData.ceremonies) {
+            ceremonies = cmsData.ceremonies;
+        }
+        
+        console.log('📁 Datos del CMS cargados correctamente desde DataManager');
+        return true;
+    } else {
+        // Fallback al método anterior si DataManager no está disponible
+        const savedData = localStorage.getItem('hijosdelsol_cms_data');
+        if (savedData) {
+            try {
+                cmsData = JSON.parse(savedData);
+                
+                // Convertir productos del CMS al formato del sitio
+                if (cmsData.products) {
+                    products = {};
+                    Object.values(cmsData.products).forEach(product => {
+                        products[product.id] = {
+                            name: product.name,
+                            price: product.price,
+                            image: product.emoji,
+                            imageType: product.imageType || 'emoji',
+                            imageUrl: product.imageUrl || '',
+                            description: product.description,
+                            features: product.features || [],
+                            stock: product.stock || 'En Stock'
+                        };
+                    });
+                }
+                
+                // Cargar ceremonias del CMS
+                if (cmsData.ceremonies) {
+                    ceremonies = cmsData.ceremonies;
+                }
+                
+                console.log('📁 Datos del CMS cargados desde localStorage');
+                return true;
+            } catch (e) {
+                console.error('❌ Error cargando datos del CMS:', e);
             }
-            
-            // Cargar ceremonias del CMS
-            if (cmsData.ceremonies) {
-                ceremonies = cmsData.ceremonies;
-            }
-            
-            console.log('📁 Datos del CMS cargados correctamente');
-            return true;
-        } catch (e) {
-            console.error('❌ Error cargando datos del CMS:', e);
         }
     }
     

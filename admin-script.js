@@ -128,14 +128,24 @@ document.addEventListener('DOMContentLoaded', function() {
     console.log('✅ CMS Admin - Inicializado correctamente');
 });
 
-// Cargar datos desde localStorage
+// Cargar datos desde CloudSyncManager
 function loadDataFromStorage() {
+    if (window.cloudSyncManager) {
+        const cloudData = window.cloudSyncManager.getData();
+        if (cloudData) {
+            currentData = { ...currentData, ...cloudData };
+            console.log('📁 Datos cargados desde CloudSyncManager');
+            return;
+        }
+    }
+    
+    // Fallback a localStorage si CloudSyncManager no está disponible
     const savedData = localStorage.getItem(CMS_CONFIG.storageKey);
     if (savedData) {
         try {
             const parsedData = JSON.parse(savedData);
             currentData = { ...currentData, ...parsedData };
-            console.log('📁 Datos cargados desde localStorage');
+            console.log('📁 Datos cargados desde localStorage (fallback)');
         } catch (e) {
             console.error('❌ Error cargando datos:', e);
             showMessage('Error cargando datos guardados', 'error');
@@ -143,11 +153,24 @@ function loadDataFromStorage() {
     }
 }
 
-// Guardar datos en localStorage
-function saveDataToStorage() {
+// Guardar datos usando CloudSyncManager
+async function saveDataToStorage() {
     try {
-        localStorage.setItem(CMS_CONFIG.storageKey, JSON.stringify(currentData));
-        console.log('💾 Datos guardados en localStorage');
+        // Usar CloudSyncManager si está disponible
+        if (window.cloudSyncManager && typeof window.cloudSyncManager.updateData === 'function') {
+            const result = await window.cloudSyncManager.updateData(currentData);
+            if (result) {
+                console.log('💾☁️ Datos guardados y sincronizados en la nube');
+                showMessage('☁️ Datos sincronizados en la nube', 'success');
+            } else {
+                console.log('💾 Datos guardados localmente (sin conexión)'); 
+            }
+        } else {
+            // Fallback a localStorage
+            localStorage.setItem(CMS_CONFIG.storageKey, JSON.stringify(currentData));
+            console.log('💾 Datos guardados en localStorage (fallback)');
+        }
+        
         updateDashboard();
     } catch (e) {
         console.error('❌ Error guardando datos:', e);
